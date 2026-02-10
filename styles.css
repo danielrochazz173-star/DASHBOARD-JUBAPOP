@@ -7,6 +7,10 @@
   --accent: #34433a;
   --accent-dark: #2b372f;
   --accent-soft: #e5ebe4;
+  --accent-gold: #f2b705;
+  --accent-clay: #e76f51;
+  --accent-slate: #4ea8de;
+  --accent-teal: #2a9d8f;
   --stroke: #d8ddd6;
   --shadow: 0 20px 40px rgba(29, 33, 29, 0.08);
 }
@@ -19,7 +23,7 @@ body {
   margin: 0;
   font-family: "Space Grotesk", sans-serif;
   color: var(--bg-ink);
-  background: radial-gradient(circle at top, #f9faf8 0%, var(--bg) 55%);
+  background: radial-gradient(circle at top, #f7f5ef 0%, #eef2ec 55%);
   min-height: 100vh;
   padding: 32px 18px 80px;
 }
@@ -125,8 +129,8 @@ p {
 }
 
 .chip {
-  background: var(--accent-soft);
-  color: var(--accent-dark);
+  background: linear-gradient(120deg, rgba(242, 183, 5, 0.2), rgba(231, 111, 81, 0.2));
+  color: #7a4a26;
   font-size: 12px;
   padding: 4px 10px;
   border-radius: 999px;
@@ -191,7 +195,7 @@ p {
   padding: 14px 16px;
   border-radius: 16px;
   border: 1px solid var(--stroke);
-  background: #f7f9f6;
+  background: #f7f6f2;
   display: flex;
   flex-direction: column;
   gap: 6px;
@@ -201,7 +205,7 @@ p {
   padding: 16px;
   border-radius: 18px;
   border: 1px solid var(--stroke);
-  background: #ffffff;
+  background: #f8f7f3;
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -241,6 +245,7 @@ p {
 .secondary {
   border: 1px solid var(--stroke);
   background: #fff;
+  color: var(--accent);
   padding: 8px 14px;
   border-radius: 999px;
   font-weight: 600;
@@ -269,7 +274,7 @@ table {
 }
 
 thead {
-  background: #f5f7f3;
+  background: #f4f0e6;
 }
 
 th,
@@ -280,7 +285,7 @@ td {
 }
 
 tbody tr:hover {
-  background: #eff3ee;
+  background: #f2efe6;
 }
 
 .updated {
@@ -300,7 +305,7 @@ tbody tr:hover {
 .orb-1 {
   width: 240px;
   height: 240px;
-  background: #d7e1d6;
+  background: #f2b705;
   top: -60px;
   left: -40px;
 }
@@ -308,7 +313,7 @@ tbody tr:hover {
 .orb-2 {
   width: 320px;
   height: 320px;
-  background: #e6ece4;
+  background: #2a9d8f;
   bottom: -140px;
   right: -60px;
   animation-delay: -6s;
