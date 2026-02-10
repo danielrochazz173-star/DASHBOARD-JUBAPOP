@@ -19,9 +19,9 @@
     <header class="hero">
       <div>
         <p class="eyebrow">Relatorio vivo</p>
-        <h1>Dashboard de respostas da planilha</h1>
+        <h1>Dashboard JUBAPOP</h1>
         <p class="subtitle">
-          Dados atualizados direto do Google Sheets, com foco nas informacoes
+          Dados atualizados direto do formulario, com foco nas informacoes
           principais e leitura facil no celular.
         </p>
       </div>
@@ -65,6 +65,22 @@
         </div>
         <canvas id="areasChart" height="220"></canvas>
       </article>
+    </section>
+
+    <section class="card roster-card">
+      <div class="card-header">
+        <div>
+          <h3>Pessoas por area</h3>
+          <p class="muted">Filtre a area para ver quem esta em cada time.</p>
+        </div>
+        <div class="filter-wrap">
+          <label class="filter-label" for="areaFilter">Area</label>
+          <select id="areaFilter" class="filter">
+            <option value="">Todas</option>
+          </select>
+        </div>
+      </div>
+      <div id="areaList" class="roster"></div>
     </section>
 
     <section class="card table-card">

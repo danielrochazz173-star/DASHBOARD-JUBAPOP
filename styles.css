@@ -142,6 +142,59 @@ p {
   margin: 0 auto;
 }
 
+.roster-card {
+  max-width: 1100px;
+  margin: 0 auto 28px;
+}
+
+.filter-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.filter-label {
+  font-size: 12px;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
+.filter {
+  border: 1px solid var(--stroke);
+  border-radius: 999px;
+  padding: 8px 14px;
+  font-size: 14px;
+  background: #fff;
+}
+
+.roster {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.roster-card-item {
+  padding: 14px 16px;
+  border-radius: 16px;
+  border: 1px solid var(--stroke);
+  background: #fffaf3;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.roster-name {
+  font-weight: 600;
+  font-size: 15px;
+}
+
+.roster-meta {
+  color: var(--muted);
+  font-size: 12px;
+}
+
 .search {
   border: 1px solid var(--stroke);
   border-radius: 999px;

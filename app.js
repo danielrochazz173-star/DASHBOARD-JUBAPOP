@@ -12,10 +12,19 @@ const tableHead = document.getElementById("tableHead");
 const tableBody = document.getElementById("tableBody");
 const searchInput = document.getElementById("searchInput");
 const lastUpdated = document.getElementById("lastUpdated");
+const areaFilter = document.getElementById("areaFilter");
+const areaList = document.getElementById("areaList");
 
 let daysChart = null;
 let areasChart = null;
 let cachedRows = [];
+let cachedIndexes = {
+  nameIndex: -1,
+  birthIndex: -1,
+  dayIndex: -1,
+  areaIndex: -1,
+  ageIndex: -1,
+};
 
 function setStatus(text, isError = false) {
   statusText.textContent = text;
@@ -151,6 +160,47 @@ function renderCharts(dayCounts, areaCounts) {
   });
 }
 
+function buildRoster(rows) {
+  if (!areaList) return;
+  areaList.innerHTML = "";
+
+  const { nameIndex, dayIndex, areaIndex, ageIndex } = cachedIndexes;
+  if (nameIndex < 0 || areaIndex < 0) {
+    areaList.textContent = "Coluna de area ou nome nao encontrada.";
+    return;
+  }
+
+  const selectedArea = areaFilter ? areaFilter.value : "";
+  const filteredRows = selectedArea
+    ? rows.filter((row) => row[areaIndex] === selectedArea)
+    : rows;
+
+  if (!filteredRows.length) {
+    areaList.textContent = "Sem pessoas para essa area.";
+    return;
+  }
+
+  filteredRows.forEach((row) => {
+    const item = document.createElement("div");
+    item.className = "roster-card-item";
+
+    const name = document.createElement("div");
+    name.className = "roster-name";
+    name.textContent = row[nameIndex] || "-";
+
+    const meta = document.createElement("div");
+    meta.className = "roster-meta";
+    const age = ageIndex >= 0 ? row[ageIndex] : "-";
+    const day = dayIndex >= 0 ? row[dayIndex] : "-";
+    const area = row[areaIndex] || "-";
+    meta.textContent = `Area: ${area} | Idade: ${age} | Dia: ${day}`;
+
+    item.appendChild(name);
+    item.appendChild(meta);
+    areaList.appendChild(item);
+  });
+}
+
 function applySearch(value) {
   const term = value.trim().toLowerCase();
   if (!term) {
@@ -195,6 +245,13 @@ async function loadData() {
     });
 
     cachedRows = { headers: extendedHeaders, rows: enrichedRows };
+    cachedIndexes = {
+      nameIndex,
+      birthIndex,
+      dayIndex,
+      areaIndex,
+      ageIndex: extendedHeaders.length - 1,
+    };
 
     totalCount.textContent = rows.length.toString();
 
@@ -215,6 +272,19 @@ async function loadData() {
 
     updateTable(extendedHeaders, enrichedRows);
     renderCharts(dayCounts, areaCounts);
+    if (areaFilter) {
+      const uniqueAreas = Array.from(
+        new Set(rows.map((row) => row[areaIndex]).filter(Boolean))
+      ).sort((a, b) => a.localeCompare(b));
+      areaFilter.innerHTML = '<option value="">Todas</option>';
+      uniqueAreas.forEach((area) => {
+        const option = document.createElement("option");
+        option.value = area;
+        option.textContent = area;
+        areaFilter.appendChild(option);
+      });
+    }
+    buildRoster(enrichedRows);
 
     lastUpdated.textContent = `Ultima atualizacao: ${new Date().toLocaleString("pt-BR")}`;
     setStatus("Atualizado.");
@@ -225,5 +295,8 @@ async function loadData() {
 
 refreshBtn.addEventListener("click", loadData);
 searchInput.addEventListener("input", (event) => applySearch(event.target.value));
+if (areaFilter) {
+  areaFilter.addEventListener("change", () => buildRoster(cachedRows.rows));
+}
 
 loadData();
