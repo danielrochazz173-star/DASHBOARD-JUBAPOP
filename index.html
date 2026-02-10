@@ -83,26 +83,44 @@
       <div id="areaList" class="roster"></div>
     </section>
 
+    <section class="card birthdays-card">
+      <div class="card-header">
+        <div>
+          <h3>Aniversariantes do mes</h3>
+          <p class="muted">Para organizar os parabens e contatos.</p>
+        </div>
+        <span id="birthdaysMonth" class="chip">-</span>
+      </div>
+      <div id="birthdaysList" class="birthdays"></div>
+    </section>
+
     <section class="card table-card">
       <div class="card-header">
         <div>
           <h3>Respostas completas</h3>
           <p class="muted">Nome, nascimento, idade e outras informacoes.</p>
         </div>
-        <input
-          id="searchInput"
-          class="search"
-          type="search"
-          placeholder="Buscar por nome, dia, area..."
-        />
+        <div class="table-actions">
+          <input
+            id="searchInput"
+            class="search"
+            type="search"
+            placeholder="Buscar por nome, dia, area..."
+          />
+          <button id="toggleTable" class="secondary" type="button">
+            Mostrar respostas
+          </button>
+        </div>
       </div>
-      <div class="table-wrap">
-        <table>
-          <thead id="tableHead"></thead>
-          <tbody id="tableBody"></tbody>
-        </table>
+      <div id="tablePanel" class="table-panel is-collapsed">
+        <div class="table-wrap">
+          <table>
+            <thead id="tableHead"></thead>
+            <tbody id="tableBody"></tbody>
+          </table>
+        </div>
+        <p id="lastUpdated" class="updated">Ultima atualizacao: -</p>
       </div>
-      <p id="lastUpdated" class="updated">Ultima atualizacao: -</p>
     </section>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>

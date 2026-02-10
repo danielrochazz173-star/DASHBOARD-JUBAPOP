@@ -12,8 +12,12 @@ const tableHead = document.getElementById("tableHead");
 const tableBody = document.getElementById("tableBody");
 const searchInput = document.getElementById("searchInput");
 const lastUpdated = document.getElementById("lastUpdated");
+const toggleTable = document.getElementById("toggleTable");
+const tablePanel = document.getElementById("tablePanel");
 const areaFilter = document.getElementById("areaFilter");
 const areaList = document.getElementById("areaList");
+const birthdaysList = document.getElementById("birthdaysList");
+const birthdaysMonth = document.getElementById("birthdaysMonth");
 
 let daysChart = null;
 let areasChart = null;
@@ -201,6 +205,58 @@ function buildRoster(rows) {
   });
 }
 
+function buildBirthdays(rows) {
+  if (!birthdaysList || !birthdaysMonth) return;
+  birthdaysList.innerHTML = "";
+
+  const { nameIndex, birthIndex } = cachedIndexes;
+  if (nameIndex < 0 || birthIndex < 0) {
+    birthdaysList.textContent = "Coluna de nascimento nao encontrada.";
+    return;
+  }
+
+  const now = new Date();
+  const currentMonth = now.getMonth();
+  const monthLabel = now.toLocaleString("pt-BR", { month: "long" });
+  birthdaysMonth.textContent = monthLabel;
+
+  const matches = rows
+    .map((row) => {
+      const birthDate = parseDateBR(row[birthIndex]);
+      if (!birthDate) return null;
+      if (birthDate.getMonth() !== currentMonth) return null;
+      return {
+        name: row[nameIndex] || "-",
+        day: birthDate.getDate(),
+        fullDate: birthDate,
+      };
+    })
+    .filter(Boolean)
+    .sort((a, b) => a.day - b.day);
+
+  if (!matches.length) {
+    birthdaysList.textContent = "Sem aniversariantes neste mes.";
+    return;
+  }
+
+  matches.forEach((person) => {
+    const card = document.createElement("div");
+    card.className = "birthday-card";
+
+    const name = document.createElement("div");
+    name.className = "roster-name";
+    name.textContent = person.name;
+
+    const date = document.createElement("div");
+    date.className = "birthday-date";
+    date.textContent = `Dia ${person.day}`;
+
+    card.appendChild(name);
+    card.appendChild(date);
+    birthdaysList.appendChild(card);
+  });
+}
+
 function applySearch(value) {
   const term = value.trim().toLowerCase();
   if (!term) {
@@ -285,6 +341,7 @@ async function loadData() {
       });
     }
     buildRoster(enrichedRows);
+    buildBirthdays(enrichedRows);
 
     lastUpdated.textContent = `Ultima atualizacao: ${new Date().toLocaleString("pt-BR")}`;
     setStatus("Atualizado.");
@@ -297,6 +354,12 @@ refreshBtn.addEventListener("click", loadData);
 searchInput.addEventListener("input", (event) => applySearch(event.target.value));
 if (areaFilter) {
   areaFilter.addEventListener("change", () => buildRoster(cachedRows.rows));
+}
+if (toggleTable && tablePanel) {
+  toggleTable.addEventListener("click", () => {
+    const isHidden = tablePanel.classList.toggle("is-collapsed");
+    toggleTable.textContent = isHidden ? "Mostrar respostas" : "Ocultar respostas";
+  });
 }
 
 loadData();

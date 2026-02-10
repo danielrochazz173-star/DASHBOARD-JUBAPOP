@@ -147,6 +147,11 @@ p {
   margin: 0 auto 28px;
 }
 
+.birthdays-card {
+  max-width: 1100px;
+  margin: 0 auto 28px;
+}
+
 .filter-wrap {
   display: flex;
   align-items: center;
@@ -175,6 +180,12 @@ p {
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
 }
 
+.birthdays {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
 .roster-card-item {
   padding: 14px 16px;
   border-radius: 16px;
@@ -183,6 +194,22 @@ p {
   display: flex;
   flex-direction: column;
   gap: 6px;
+}
+
+.birthday-card {
+  padding: 16px;
+  border-radius: 18px;
+  border: 1px solid var(--stroke);
+  background: #ffffff;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-height: 96px;
+}
+
+.birthday-date {
+  font-size: 13px;
+  color: var(--muted);
 }
 
 .roster-name {
@@ -201,6 +228,31 @@ p {
   padding: 8px 14px;
   font-size: 14px;
   min-width: 200px;
+}
+
+.table-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.secondary {
+  border: 1px solid var(--stroke);
+  background: #fff;
+  padding: 8px 14px;
+  border-radius: 999px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.table-panel {
+  display: grid;
+  gap: 12px;
+}
+
+.table-panel.is-collapsed {
+  display: none;
 }
 
 .table-wrap {
