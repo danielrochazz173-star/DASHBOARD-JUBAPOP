@@ -76,6 +76,19 @@ function countBy(values) {
   }, {});
 }
 
+function splitAreas(value) {
+  return String(value || "")
+    .split(",")
+    .map((item) => item.trim())
+    .filter(Boolean);
+}
+
+function getRowAreas(row) {
+  const { areaIndex } = cachedIndexes;
+  if (areaIndex < 0) return [];
+  return splitAreas(row[areaIndex]);
+}
+
 function topFromCount(counts) {
   const entries = Object.entries(counts);
   if (!entries.length) return "-";
@@ -177,7 +190,7 @@ function buildRoster(rows) {
 
   const selectedArea = areaFilter ? areaFilter.value : "";
   const filteredRows = selectedArea
-    ? rows.filter((row) => row[areaIndex] === selectedArea)
+    ? rows.filter((row) => getRowAreas(row).includes(selectedArea))
     : rows;
 
   if (!filteredRows.length) {
@@ -197,8 +210,8 @@ function buildRoster(rows) {
     meta.className = "roster-meta";
     const age = ageIndex >= 0 ? row[ageIndex] : "-";
     const day = dayIndex >= 0 ? row[dayIndex] : "-";
-    const area = row[areaIndex] || "-";
-    meta.textContent = `Area: ${area} | Idade: ${age} | Dia: ${day}`;
+    const areaListText = getRowAreas(row).join(", ") || "-";
+    meta.textContent = `Area: ${areaListText} | Idade: ${age} | Dia: ${day}`;
 
     item.appendChild(name);
     item.appendChild(meta);
@@ -321,8 +334,14 @@ async function loadData() {
     avgAge.textContent = avg ? `${avg} anos` : "-";
 
     const dayCounts = dayIndex >= 0 ? countBy(rows.map((row) => row[dayIndex])) : {};
-    const areaCounts =
-      areaIndex >= 0 ? countBy(rows.map((row) => row[areaIndex])) : {};
+    const areaCounts = {};
+    if (areaIndex >= 0) {
+      rows.forEach((row) => {
+        splitAreas(row[areaIndex]).forEach((area) => {
+          areaCounts[area] = (areaCounts[area] || 0) + 1;
+        });
+      });
+    }
 
     topDay.textContent = topFromCount(dayCounts);
     topArea.textContent = topFromCount(areaCounts);
@@ -330,9 +349,10 @@ async function loadData() {
     updateTable(extendedHeaders, enrichedRows);
     renderCharts(dayCounts, areaCounts);
     if (areaFilter) {
-      const uniqueAreas = Array.from(
-        new Set(rows.map((row) => row[areaIndex]).filter(Boolean))
-      ).sort((a, b) => a.localeCompare(b));
+      const allAreas = rows.flatMap((row) => splitAreas(row[areaIndex]));
+      const uniqueAreas = Array.from(new Set(allAreas)).sort((a, b) =>
+        a.localeCompare(b)
+      );
       areaFilter.innerHTML = '<option value="">Todas</option>';
       uniqueAreas.forEach((area) => {
         const option = document.createElement("option");
