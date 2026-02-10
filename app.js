@@ -42,6 +42,17 @@ function normalizeText(value) {
     .replace(/[\u0300-\u036f]/g, "");
 }
 
+function formatName(value) {
+  return String(value || "")
+    .trim()
+    .split(/\s+/)
+    .map((part) => {
+      if (!part) return "";
+      return part[0].toUpperCase() + part.slice(1).toLowerCase();
+    })
+    .join(" ");
+}
+
 function buildUrl() {
   const encodedRange = encodeURIComponent(RANGE);
   return `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${encodedRange}?key=${API_KEY}`;
@@ -112,7 +123,11 @@ function updateTable(headers, rows) {
     const tr = document.createElement("tr");
     headers.forEach((_, index) => {
       const td = document.createElement("td");
-      td.textContent = row[index] ?? "";
+      if (index === cachedIndexes.nameIndex) {
+        td.textContent = formatName(row[index]);
+      } else {
+        td.textContent = row[index] ?? "";
+      }
       tr.appendChild(td);
     });
     tableBody.appendChild(tr);
@@ -204,7 +219,7 @@ function buildRoster(rows) {
 
     const name = document.createElement("div");
     name.className = "roster-name";
-    name.textContent = row[nameIndex] || "-";
+    name.textContent = formatName(row[nameIndex]) || "-";
 
     const meta = document.createElement("div");
     meta.className = "roster-meta";
@@ -240,7 +255,7 @@ function buildBirthdays(rows) {
       if (!birthDate) return null;
       if (birthDate.getMonth() !== currentMonth) return null;
       return {
-        name: row[nameIndex] || "-",
+        name: formatName(row[nameIndex]) || "-",
         day: birthDate.getDate(),
         fullDate: birthDate,
       };
