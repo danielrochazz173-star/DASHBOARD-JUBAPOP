@@ -2,7 +2,7 @@
 
 Este projeto e uma solucao criada para um projeto da minha igreja, a Igreja Batista em Ponte Preta, especificamente para área Jovem da Igreja - JUBAPOP - Juventude Batista em Ponte Preta.
 
-Ele organiza os dados coletados em um formulario do Google Sheets e apresenta um dashboard simples e claro, com graficos, lista de pessoas por area e aniversariantes do mes. Foi um projeto bem legal que me diverti fazendo com voce. Obrigado!
+Ele organiza os dados coletados em um formulario do Google Sheets e apresenta um dashboard simples e claro, com graficos, lista de pessoas por area e aniversariantes do mes. Foi um projeto bem legal que me diverti fazendo.
 
 ## O que tem no dashboard
 
